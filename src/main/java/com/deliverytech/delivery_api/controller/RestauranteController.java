@@ -1,7 +1,13 @@
 package com.deliverytech.delivery_api.controller;
 
+import com.deliverytech.delivery_api.dto.ProdutoResponseDTO;
+import com.deliverytech.delivery_api.dto.RestauranteRequestDTO;
+import com.deliverytech.delivery_api.dto.RestauranteResponseDTO;
 import com.deliverytech.delivery_api.model.Restaurante;
 import com.deliverytech.delivery_api.service.RestauranteService;
+
+import jakarta.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,9 +25,9 @@ public class RestauranteController {
     private RestauranteService restauranteService;
 
     @PostMapping
-    public ResponseEntity<?> cadastrar(@Validated @RequestBody Restaurante restaurante) {
+    public ResponseEntity<?> cadastrar(@Valid @RequestBody RestauranteRequestDTO restaurante) {
         try {
-            Restaurante restauranteSalvo = restauranteService.cadastrar(restaurante);
+            RestauranteResponseDTO restauranteSalvo = restauranteService.cadastrar(restaurante);
             return ResponseEntity.status(HttpStatus.CREATED).body(restauranteSalvo);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body("Erro: " + e.getMessage());
@@ -75,5 +81,18 @@ public class RestauranteController {
     public ResponseEntity<List<Restaurante>> buscarPorCategoria(@PathVariable String categoria) {
         List<Restaurante> restaurantes = restauranteService.buscarPorCategoria(categoria);
         return ResponseEntity.ok(restaurantes);
+    }
+
+    @GetMapping("/{id}/produtos")
+    public ResponseEntity<?> listarProdutos(@PathVariable Long id) {
+        try {
+            List<ProdutoResponseDTO> produtos = restauranteService.listarProdutosDoRestaurante(id);
+            return ResponseEntity.ok(produtos);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Erro: " + e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Erro interno do servidor");
+        }
     }
 }

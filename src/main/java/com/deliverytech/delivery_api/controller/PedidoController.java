@@ -1,12 +1,17 @@
 package com.deliverytech.delivery_api.controller;
 
+import com.deliverytech.delivery_api.dto.PedidoRequestDTO;
+import com.deliverytech.delivery_api.dto.PedidoResponseDTO;
+import com.deliverytech.delivery_api.dto.StatusUpdateDTO;
 import com.deliverytech.delivery_api.model.Pedido;
 import com.deliverytech.delivery_api.service.PedidoService;
+
+import jakarta.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,9 +24,9 @@ public class PedidoController {
     private PedidoService pedidoService;
 
     @PostMapping
-    public ResponseEntity<?> cadastrar(@Validated @RequestBody Pedido pedido) {
+    public ResponseEntity<?> cadastrar(@Valid @RequestBody PedidoRequestDTO pedido) {
         try {
-            Pedido pedidoSalvo = pedidoService.cadastrar(pedido);
+            PedidoResponseDTO pedidoSalvo = pedidoService.cadastrar(pedido);
             return ResponseEntity.status(HttpStatus.CREATED).body(pedidoSalvo);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body("Erro: " + e.getMessage());
@@ -45,9 +50,9 @@ public class PedidoController {
     }
 
     @PatchMapping("/{id}/status")
-    public ResponseEntity<?> atualizarStatus(@PathVariable Long id, @RequestParam String novoStatus) {
+    public ResponseEntity<?> atualizarStatus(@PathVariable Long id, @RequestBody StatusUpdateDTO dto) {
         try {
-            Pedido pedidoAtualizado = pedidoService.atualizarStatus(id, novoStatus);
+            Pedido pedidoAtualizado = pedidoService.atualizarStatus(id, dto.getNovoStatus());
             return ResponseEntity.ok(pedidoAtualizado);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body("Erro: " + e.getMessage());

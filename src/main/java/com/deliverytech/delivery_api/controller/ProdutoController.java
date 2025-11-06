@@ -1,7 +1,12 @@
 package com.deliverytech.delivery_api.controller;
 
+import com.deliverytech.delivery_api.dto.ProdutoRequestDTO;
+import com.deliverytech.delivery_api.dto.ProdutoResponseDTO;
 import com.deliverytech.delivery_api.model.Produto;
 import com.deliverytech.delivery_api.service.ProdutoService;
+
+import jakarta.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,9 +24,9 @@ public class ProdutoController {
     private ProdutoService produtoService;
 
     @PostMapping
-    public ResponseEntity<?> cadastrar(@Validated @RequestBody Produto produto) {
+    public ResponseEntity<?> cadastrar(@Valid @RequestBody ProdutoRequestDTO produto) {
         try {
-            Produto produtoSalvo = produtoService.cadastrar(produto);
+            ProdutoResponseDTO produtoSalvo = produtoService.cadastrar(produto);
             return ResponseEntity.status(HttpStatus.CREATED).body(produtoSalvo);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body("Erro: " + e.getMessage());
