@@ -6,6 +6,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Data
@@ -31,9 +34,16 @@ public class Cliente {
     @Column(nullable = true)
     private Boolean ativo;
 
+    @OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<Pedido> pedidos;
+
     public void inativar() {
         this.ativo = false;
     }
 
+    public boolean isAtivo() {
+        return this.ativo != null && this.ativo;
+    }
 
 }

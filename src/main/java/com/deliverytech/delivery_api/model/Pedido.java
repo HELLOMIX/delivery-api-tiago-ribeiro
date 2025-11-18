@@ -2,13 +2,9 @@ package com.deliverytech.delivery_api.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,28 +18,36 @@ public class Pedido {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(name = "numero_pedido", length = 20, nullable = false)
+    
+    @Column(name = "numero_pedido")
     private String numeroPedido;
 
     @Column(name = "data_pedido")
     private LocalDateTime dataPedido;
 
-    @Column(name = "status", length = 20)
     private String status;
 
-    @Column(name = "valor_total", precision = 10, scale = 2)
+    @Column(name = "valor_total")
     private BigDecimal valorTotal;
 
-    @Column(name = "observacoes", length = 200)
     private String observacoes;
 
-    @Column(name = "cliente_id")
-    private Long clienteId;
+    @Column(name = "endereco_entrega")
+    private String enderecoEntrega;
 
-    @Column(name = "restaurante_id")
-    private Long restauranteId;
+    @Column(name = "taxa_entrega")
+    private BigDecimal taxaEntrega;
+    
+    private String cep;
 
-    @Column(name = "itens", length = 200)
-    private String itens;
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
+    private List<ItemPedido> itens;
+
+    @ManyToOne
+    @JoinColumn(name = "cliente_id")
+    private Cliente cliente;
+
+    @ManyToOne
+    @JoinColumn(name = "restaurante_id")
+    private Restaurante restaurante;
 }

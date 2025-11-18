@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Data
@@ -22,6 +25,8 @@ public class Restaurante {
 
     private String endereco;
 
+    private String cep;
+
     private String telefone;
 
     @Column(name = "taxa_entrega")
@@ -31,7 +36,16 @@ public class Restaurante {
 
     private Boolean ativo;
 
-    public void inativar() {
-        this.ativo = false;
+    @OneToMany(mappedBy = "restaurante", fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<Produto> produtos;
+
+    @OneToMany(mappedBy = "restaurante", fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<Pedido> pedidos;
+
+    public boolean isAtivo() {
+        return this.ativo != null && this.ativo;
     }
+    
 }

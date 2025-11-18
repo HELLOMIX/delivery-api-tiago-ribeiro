@@ -1,80 +1,32 @@
 package com.deliverytech.delivery_api.service;
 
-import com.deliverytech.delivery_api.dto.ProdutoRequestDTO;
-import com.deliverytech.delivery_api.dto.ProdutoResponseDTO;
-import com.deliverytech.delivery_api.model.Produto;
-import com.deliverytech.delivery_api.repository.ProdutoRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
+import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 
-@Service
-@Transactional
-public class ProdutoService {
-    @Autowired
-    private ProdutoRepository produtoRepository;
+import com.deliverytech.delivery_api.dto.request.ProdutoRequestDTO;
+import com.deliverytech.delivery_api.dto.response.ProdutoResponseDTO;
 
-    public ProdutoResponseDTO cadastrar(ProdutoRequestDTO dto) {
 
-        Produto produto = new Produto();
-        produto.setNome(dto.getNome());
-        produto.setDescricao(dto.getDescricao());
-        produto.setPreco(dto.getPreco());
-        produto.setCategoria(dto.getCategoria());
-        produto.setDisponivel(true);
+public interface ProdutoService {
 
-        return new ProdutoResponseDTO(produtoRepository.save(produto));
-    }
+    ProdutoResponseDTO cadastrar(ProdutoRequestDTO dto);
 
-    @Transactional(readOnly = true)
-    public List<Produto> listarDisponiveis() {
-        return produtoRepository.findByDisponivelTrue();
-    }
+    ProdutoResponseDTO buscarPorId(Long id);
 
-    @Transactional(readOnly = true)
-    public Optional<Produto> buscarPorId(Long id) {
-        return produtoRepository.findById(id);
-    }
+    ProdutoResponseDTO atualizar(Long id, ProdutoRequestDTO dto);
 
-    public Produto atualizar(Long id, Produto produtoAtualizado) {
-        Produto produto = buscarPorId(id)
-                .orElseThrow(() -> new IllegalArgumentException("Produto não encontrado: " + id));
+    ProdutoResponseDTO ativarDesativarProduto(Long id);
 
-        produto.setNome(produtoAtualizado.getNome());
-        produto.setDescricao(produtoAtualizado.getDescricao());
-        produto.setPreco(produtoAtualizado.getPreco());
-        produto.setCategoria(produtoAtualizado.getCategoria());
+    ProdutoResponseDTO buscarPorNome(String nome);
 
-        return produtoRepository.save(produto);
-    }
+    List<ProdutoResponseDTO>  buscarPorRestaurante(Long restauranteId);
 
-    public void indisponibilizar(Long id) {
-        Produto produto = buscarPorId(id)
-                .orElseThrow(() -> new IllegalArgumentException("Produto não encontrado: " + id));
-        
-        produto.indisponibilizar();
-        produtoRepository.save(produto);
-    }
+    List<ProdutoResponseDTO> buscarPorCategoria(String categoria);
 
-    @Transactional(readOnly = true)
-    public List<Produto> buscarPorCategoria(String categoria) {
-        return produtoRepository.findByCategoria(categoria);
-    }
+    List<ProdutoResponseDTO> buscarPorPreco(BigDecimal precoMinimo, BigDecimal precoMaximo);
 
-    //private void validarDadosProduto(Produto produto) {
-    //    if (produto.getNome() == null || produto.getNome().trim().isEmpty()) {
-    //        throw new IllegalArgumentException("Nome é obrigatório");
-    //    }
-//
-    //    if (produto.getPreco() == null || produto.getPreco().compareTo(BigDecimal.ZERO) <= 0) {
-    //        throw new IllegalArgumentException("Preço deve ser maior que zero");
-    //    }
-//
-    //    if (produto.getRestauranteId() == null) {
-    //        throw new IllegalArgumentException("Restaurante é obrigatório");
-    //    }
-    //}
+    List<ProdutoResponseDTO> buscarTodosProdutos();
+
+    List<ProdutoResponseDTO> buscarPorPrecoMenorOuIgual(BigDecimal valor);
+
 }

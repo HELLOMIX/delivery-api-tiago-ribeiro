@@ -1,4 +1,4 @@
-CREATE TABLE clientes (
+CREATE TABLE IF NOT EXISTS clientes (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL,
@@ -8,7 +8,7 @@ CREATE TABLE clientes (
     ativo BOOLEAN
 );
 
-CREATE TABLE restaurantes (
+CREATE TABLE IF NOT EXISTS restaurantes (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
     categoria VARCHAR(50),
@@ -19,7 +19,7 @@ CREATE TABLE restaurantes (
     ativo BOOLEAN
 );
 
-CREATE TABLE produtos (
+CREATE TABLE IF NOT EXISTS produtos (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
     descricao VARCHAR(200),
@@ -29,7 +29,7 @@ CREATE TABLE produtos (
     restaurante_id INT
 );
 
-CREATE TABLE pedidos (
+CREATE TABLE IF NOT EXISTS pedidos (
     id INT AUTO_INCREMENT PRIMARY KEY,
     numero_pedido VARCHAR(20) NOT NULL,
     data_pedido TIMESTAMP,

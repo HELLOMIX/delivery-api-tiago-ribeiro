@@ -26,10 +26,11 @@ public class Produto {
 
     private Boolean disponivel;
 
-    @Column(name = "restaurante_id")
-    private Long restauranteId;
+    @ManyToOne
+    @JoinColumn(name = "restaurante_id")
+    private Restaurante restaurante;
 
-    public void indisponibilizar() {
-        this.disponivel = false;
+    public boolean isAtivo() {
+        return this.disponivel != null && this.disponivel;
     }
 }
