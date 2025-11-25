@@ -1,22 +1,26 @@
 package com.deliverytech.delivery_api.controller;
 
 import com.deliverytech.delivery_api.dto.request.RestauranteRequestDTO;
+import com.deliverytech.delivery_api.dto.response.ApiResponseWrapper;
 import com.deliverytech.delivery_api.dto.response.RestauranteResponseDTO;
 import com.deliverytech.delivery_api.projection.RelatorioVendas;
 import com.deliverytech.delivery_api.service.RestauranteService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.validation.annotation.Validated;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -33,9 +37,25 @@ public class RestauranteController {
         @ApiResponse(responseCode = "404", description = "Requisição inválida"),
         @ApiResponse(responseCode = "409", description = "Restaurante já existe")
     })
-    public ResponseEntity<RestauranteResponseDTO> cadastrar(@Valid @RequestBody RestauranteRequestDTO restaurante) {
-        RestauranteResponseDTO restauranteSalvo = restauranteService.cadastrar(restaurante);
+    public ResponseEntity<RestauranteResponseDTO> cadastrar(@Valid @RequestBody RestauranteRequestDTO dto) {
+        RestauranteResponseDTO restauranteSalvo = restauranteService.cadastrar(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(restauranteSalvo);
+    }
+
+    @GetMapping
+    @Operation(summary = "Listar pedidos",
+            description = "Lista pedidos com filtros opcionais e paginação")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Lista recuperada com sucesso")
+    })
+    public ResponseEntity<ApiResponseWrapper<List<RestauranteResponseDTO>>> listarTodos(
+            @RequestParam(required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFim,
+            @Parameter(description = "Parâmetros de paginação")
+            Pageable pageable) {
+        List<RestauranteResponseDTO> restaurantes = restauranteService.listarAtivos();
+        ApiResponseWrapper<List<RestauranteResponseDTO>> response = new ApiResponseWrapper<>(true, restaurantes, "Busca Realizada com sucesso");
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")
@@ -59,7 +79,7 @@ public class RestauranteController {
             @ApiResponse(responseCode = "400", description = "Dados inválidos")
     })
     public ResponseEntity<RestauranteResponseDTO> atualizar(@PathVariable Long id,
-                                     @Validated @RequestBody RestauranteRequestDTO dto) {
+                                     @Valid @RequestBody RestauranteRequestDTO dto) {
         RestauranteResponseDTO restauranteAtualizado = restauranteService.atualizar(id, dto);
         return ResponseEntity.ok(restauranteAtualizado);
     }

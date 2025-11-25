@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.validation.annotation.Validated;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -32,7 +31,7 @@ public class ProdutoController {
         @ApiResponse(responseCode = "404", description = "Requisição inválida"),
         @ApiResponse(responseCode = "409", description = "Produto já existe")
     })
-    public ResponseEntity<?> cadastrar(@Valid @RequestBody ProdutoRequestDTO produto) {
+    public ResponseEntity<ProdutoResponseDTO> cadastrar(@Valid @RequestBody ProdutoRequestDTO produto) {
         ProdutoResponseDTO produtoSalvo = produtoService.cadastrar(produto);
         return ResponseEntity.status(HttpStatus.CREATED).body(produtoSalvo);
     }
@@ -58,7 +57,7 @@ public class ProdutoController {
         @ApiResponse(responseCode = "400", description = "Dados inválidos")
     })
     public ResponseEntity<ProdutoResponseDTO> atualizar(@PathVariable Long id,
-                                     @Validated @RequestBody ProdutoRequestDTO dto) {
+                                     @Valid @RequestBody ProdutoRequestDTO dto) {
         ProdutoResponseDTO produtoAtualizado = produtoService.atualizar(id, dto);
         return ResponseEntity.ok(produtoAtualizado);
     }
@@ -73,6 +72,18 @@ public class ProdutoController {
     public ResponseEntity<ProdutoResponseDTO> ativarDesativarProduto(@PathVariable Long id) {
         ProdutoResponseDTO produtoAtualizado = produtoService.ativarDesativarProduto(id);
         return ResponseEntity.ok(produtoAtualizado);
+    }
+
+    @GetMapping("/nome/{nome}")
+    @Operation(summary = "Buscar produto por nome",
+            description = "Recupera os detalhes de um produto específico pelo nome")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Produto encontrado"),
+            @ApiResponse(responseCode = "404", description = "Produto não encontrado")
+    })
+    public ResponseEntity<ProdutoResponseDTO> buscarPorNome(@PathVariable String nome) {
+        ProdutoResponseDTO produto = produtoService.buscarPorNome(nome);
+        return ResponseEntity.ok(produto);
     }
 
     @GetMapping("/restaurante/{restauranteId}")

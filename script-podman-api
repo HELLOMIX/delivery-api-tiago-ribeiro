@@ -1,0 +1,5 @@
+Construir a build
+podman build -t localhost/delivery-api:latest .
+
+Executar a build
+podman run -d -p 8080:8080 --name delivery-api delivery-api:latest
