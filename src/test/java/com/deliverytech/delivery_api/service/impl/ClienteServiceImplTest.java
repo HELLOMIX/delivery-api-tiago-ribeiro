@@ -163,7 +163,7 @@ class ClienteServiceImplTest {
         cliente.setNome("Maria Silva");
         cliente.setEmail("maria@maria.com");
         cliente.setTelefone("11999999999");
-         cliente.setEndereco("Rua Exemplo, 123, São Paulo, SP");
+        cliente.setEndereco("Rua Exemplo, 123, São Paulo, SP");
 
         when(clienteRepository.findById(clienteId)).thenReturn(Optional.of(cliente));
         when(modelMapper.map(any(Cliente.class), eq(ClienteResponseDTO.class)))
