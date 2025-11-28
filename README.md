@@ -48,13 +48,15 @@ ________________________________________________________________________________
 ## ⚙️ EXECUÇÃO DO PROJETO
 
 
-🧪 ROTEIRO DE TESTES E EXEMPLOS DE USO
+🧪 ROTEIRO DE TESTES E EXEMPLOS DE USO <br>
 Os testes abaixo podem ser executados diretamente no Postman ou Insomnia.
 
 # 🔒 AUTORIZAÇÃO
-1️⃣ Cadastrar usuário
+1️⃣ Cadastrar usuário<br>
 POST /auth/register
 
+json<br>
+Copiar código
 ```
 {
   "nome": "Cleber",
@@ -66,9 +68,11 @@ POST /auth/register
 
 🟢 Esperado: Retorna 201 Created com os dados do usuário salvo.
 
-2️⃣ Logar usuário
+2️⃣ Logar usuário<br>
 POST /auth/login
 
+json<br>
+Copiar código
 ```
 {
   "email": "cleberADMIN@cleberleao.com",
@@ -80,10 +84,10 @@ POST /auth/login
 ____________________________________________________________________________________________________________________
 
 # 🧍 CLIENTES
-1️⃣ Criar Cliente
+1️⃣ Criar Cliente<br>
 POST /clientes
 
-json
+json<br>
 Copiar código
 ```
 {
@@ -93,32 +97,33 @@ Copiar código
   "endereco": "Rua das Flores, 123, São Paulo, SP"
 }
 ```
+
 🟢 Esperado: Retorna 201 Created com os dados do cliente salvo.
 
-2️⃣ Listar Clientes
+2️⃣ Listar Clientes<br>
 GET /clientes
 
 🟢 Esperado: Retorna lista com todos os clientes ativos.
 
-3️⃣ Buscar Cliente por ID
+3️⃣ Buscar Cliente por ID<br>
 GET /clientes/{id}
 
 🟢 Esperado: Retorna os dados do cliente com ID 1.
 
-4️⃣ Buscar Cliente por Email
+4️⃣ Buscar Cliente por Email<br>
 GET /clientes/email/{email}
 
 🟢 Esperado: Retorna os dados do cliente com o email digitado.
 
-5️⃣Buscar Cliente por Nome
+5️⃣Buscar Cliente por Nome<br>
 GET /clientes/buscar/{nome}
 
 🟢 Esperado: Retorna os dados do cliente com o nome digitado.
 
-6️⃣ Atualizar Cliente
+6️⃣ Atualizar Cliente<br>
 PUT /clientes/{id}
 
-json
+json<br>
 Copiar código
 ```
 {
@@ -130,7 +135,7 @@ Copiar código
 ```
 🟢 Esperado: Retorna 200 OK com os dados atualizados.
 
-7️⃣ Inativar Cliente
+7️⃣ Inativar Cliente<br>
 DELETE /clientes/{id}
 
 🟢 Esperado: Retorna 204 No Content e o cliente deixa de aparecer nas buscas ativas.
@@ -138,10 +143,10 @@ DELETE /clientes/{id}
 ____________________________________________________________________________________________________________________
 
 # 🍴 RESTAURANTES
-1️⃣ Cadastrar Restaurante
+1️⃣ Cadastrar Restaurante<br>
 POST /restaurantes
 
-json
+json<br>
 Copiar código
 ```
 {
@@ -157,52 +162,52 @@ Copiar código
 ```
 🟢 Esperado: Restaurante criado com sucesso (201 Created).
 
-2️⃣ Listar Restaurantes
+2️⃣ Listar Restaurantes<br>
 GET /restaurantes
 
 🟢 Esperado: Lista todos os restaurantes cadastrados.
 
-3️⃣ Buscar por Categoria
+3️⃣ Buscar por Categoria<br>
 GET /restaurantes/categoria/{categoria}
 
 🟢 Esperado: Retorna apenas restaurantes da categoria escolhida.
 
-4️⃣ Buscar Top 5
+4️⃣ Buscar Top 5<br>
 GET /restaurantes/top-cinco
 
 🟢 Esperado: Retorna apenas cinco restaurantes com as melhores avaliações.
 
-5️⃣ Ordenar por taxa de entrega
+5️⃣ Ordenar por taxa de entrega<br>
 GET /restaurantes/taxa-entrega
 
 🟢 Esperado: Retorna restaurantes por taxa de entrega.
 
-6️⃣ Gerar um relatório de vendas
+6️⃣ Gerar um relatório de vendas<br>
 GET /restaurantes/relatorio-vendas
 
 🟢 Esperado: Gerar um relatório de vendas por restaurante.
 
-7️⃣ Buscar por faixa de preço
+7️⃣ Buscar por faixa de preço<br>
 GET /restaurantes/preco/{precoMinimo}/{precoMaximo}
 
 🟢 Esperado: Lista todos os restaurantes dentro de uma faixa de preço específica.
 
-8️⃣ Buscar por nome
+8️⃣ Buscar por nome<br>
 GET /restaurantes/nome/{nome}
 
 🟢 Esperado: Recupera os detalhes de um restaurante específico pelo nome.
 
-9️⃣ Inativar e/ou inativar um restaurante
+9️⃣ Inativar e/ou inativar um restaurante<br>
 PATCH /restaurantes/{id}/ativar-desativar
 
 🟢 Esperado: Ativa ou desativa um restaurante pelo ID com "ativo" sendo true ou false.
 
-🔟 Atualizar restaurante
+🔟 Atualizar restaurante<br>
 PUT /restaurantes/{id}
 
 🟢 Esperado: Atualiza os detalhes de um restaurante existente pelo ID.
 
-json
+json<br>
 Copiar código
 ```
 {
@@ -219,11 +224,12 @@ Copiar código
 ____________________________________________________________________________________________________________________
 
 # 🍕 PRODUTOS
-1️⃣ Cadastrar Produto
+1️⃣ Cadastrar Produto<br>
 POST /produtos
 
-json
+json<br>
 Copiar código
+```
 {
   "nome": "Pizza Margherita",
   "descricao": "Deliciosa pizza com molho de tomate, mussarela e manjericão",
@@ -232,46 +238,49 @@ Copiar código
   "disponivel": true,
   "restauranteId": 1
 }
+```
 🟢 Esperado: Retorna 201 Created com os dados do produto salvo.
 
-2️⃣ Buscar por Restaurante
+2️⃣ Buscar por Restaurante<br>
 GET /produtos/restaurante/{id}
 
 🟢 Esperado: Retorna produtos do restaurante com ID digitado.
 
-3️⃣ Buscar por Categoria
+3️⃣ Buscar por Categoria<br>
 GET /produtos/categoria/{categoria}
 
 🟢 Esperado: Lista produtos da categoria digitada.
 
-4️⃣ Buscar Todos
+4️⃣ Buscar Todos<br>
 GET /produtos
 
 🟢 Esperado: Retorna todos produtos os produtos cadastrados.
 
-5️⃣ Buscar por restaurante
+5️⃣ Buscar por restaurante<br>
 GET /produtos/restaurante/{restauranteId}
 
 🟢 Esperado: Lista todos os produtos de um restaurante específico pelo ID.
 
-6️⃣ Buscar por preço
+6️⃣ Buscar por preço<br>
 GET /produtos/preco/{valor}
 
 🟢 Esperado: Lista todos os produtos com preço menor ou igual ao valor especificado.
 
-7️⃣ Buscar por nome
+7️⃣ Buscar por nome<br>
 GET /produtos/nome/{nome}
 
 🟢 Esperado: Recupera os detalhes de um produto específico pelo nome.
 
-8️⃣ Ativar/Desativar produto
+8️⃣ Ativar/Desativar produto<br>
 PATCH /produtos/{id}/ativar-desativar
 
 🟢 Esperado: Ativa ou desativa um produto pelo ID com "disponivel" sendo true ou false.
 
-9️⃣ Atualizar produto
+9️⃣ Atualizar produto<br>
 PUT /produtos/{id}
 
+json<br>
+Copiar código
 ```
 {
   "nome": "Pizza Margherita",
@@ -288,11 +297,12 @@ PUT /produtos/{id}
 ____________________________________________________________________________________________________________________
 
 # 📦 PEDIDOS
-1️⃣ Criar Pedido
+1️⃣ Criar Pedido<br>
 POST /pedidos
 
-json
+json<br>
 Copiar código
+```
 {
   "numeroPedido": "12345",
   "dataPedido": "2023-10-01",
@@ -309,41 +319,44 @@ Copiar código
     }
   ]
 }
+```
 🟢 Esperado: Pedido criado com valor total calculado automaticamente.
 
-2️⃣ Consultar Pedidos por Cliente
+2️⃣ Consultar Pedidos por Cliente<br>
 GET /pedidos/cliente/{id}
 
 🟢 Esperado: Retorna lista de pedidos feitos pelo id de cliente digitado.
 
-3️⃣ Filtrar por Status
+3️⃣ Filtrar por Status<br>
 GET /pedidos/status/{status}
 
 🟢 Esperado: Retorna todos os pedidos com status digitado.
 
-4️⃣ Filtrar por Data
+4️⃣ Filtrar por Data<br>
 GET /pedidos/data/2025-10-30
 
 🟢 Esperado: Lista pedidos criados nessa data.
 
-5️⃣  Filtrar por recentes
+5️⃣  Filtrar por recentes<br>
 GET /pedidos/recentes
 
 🟢 Esperado: Lista pedidos criados recentemente.
 
-6️⃣ Filtrar por restaurante
+6️⃣ Filtrar por restaurante<br>
 GET /pedidos/restaurante/{id}
 
 🟢 Esperado: Retorna lista de pedidos feitos pelo id de restaurante digitado.
 
-7️⃣ Atualizar Status do Pedido
+7️⃣ Atualizar Status do Pedido<br>
 PUT /pedidos/{id}/{status}
 
-json
+json<br>
 Copiar código
+```
 {
   "status": "ENTREGUE"
 }
+```
 🟢 Esperado: Retorna 200 OK com status atualizado no pedido fonecido em {id}.
 
 ____________________________________________________________________________________________________________________
@@ -429,6 +442,7 @@ ________________________________________________________________________________
 
 ## 📂 ESTRUTURA DE PROJETO (RESUMO)
 
+```
 src
 └── main/
     └── java/com/deliverytech/delivery_api/
@@ -453,6 +467,7 @@ src
 └── test/
     └── java/com/deliverytech/delivery_api/
         └── (Estrutura de pacotes espelhada para Testes Unitários e de Integração)
+```
 
 ____________________________________________________________________________________________________________________
 
