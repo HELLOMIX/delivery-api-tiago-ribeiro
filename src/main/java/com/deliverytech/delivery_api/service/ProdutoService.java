@@ -29,4 +29,6 @@ public interface ProdutoService {
 
     List<ProdutoResponseDTO> buscarPorPrecoMenorOuIgual(BigDecimal valor);
 
+    List<ProdutoResponseDTO> listarDisponiveis();
+
 }

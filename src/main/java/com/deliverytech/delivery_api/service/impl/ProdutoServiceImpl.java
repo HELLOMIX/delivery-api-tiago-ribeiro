@@ -6,6 +6,8 @@ import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,6 +35,7 @@ public class ProdutoServiceImpl implements ProdutoService{
     private ModelMapper modelMapper;
 
     @Override
+    @CacheEvict(value = "produtos", key = "#dto.restauranteId")
     public ProdutoResponseDTO cadastrar(ProdutoRequestDTO dto) {
 
         Produto produto = modelMapper.map(dto, Produto.class);
@@ -85,6 +88,7 @@ public class ProdutoServiceImpl implements ProdutoService{
     }
 
     @Override
+    @CacheEvict(value = "produtos", key = "#restauranteId")
     public ProdutoResponseDTO ativarDesativarProduto(Long id) {
         // Buscar produto existente
         Produto produto = produtoRepository.findById(id)
@@ -108,6 +112,8 @@ public class ProdutoServiceImpl implements ProdutoService{
         return modelMapper.map(produto, ProdutoResponseDTO.class);
     }
 
+    @Override
+    @Cacheable(value = "produtos", key = "#restauranteId")
     public List<ProdutoResponseDTO> buscarPorRestaurante(Long restauranteId) {
         // Buscar produtos por restaurante ID
         List<Produto> produtos = produtoRepository.findByRestauranteId(restauranteId);
@@ -174,4 +180,18 @@ public class ProdutoServiceImpl implements ProdutoService{
                 .toList();
     }
 
+    @Override
+    @Cacheable(value = "produtos", key = "true")
+    public List<ProdutoResponseDTO> listarDisponiveis() {
+        // Buscar produtos disponíveis
+        List<Produto> produtos = produtoRepository.findByDisponivelTrue();
+        if (produtos.isEmpty()) {
+            throw new BusinessException("Nenhum produto disponível encontrado");
+        }
+        // Converter lista de entidades para lista de DTOs
+        return produtos.stream()
+                .map(produto -> modelMapper.map(produto, ProdutoResponseDTO.class))
+                .toList();
+    }
+ 
 }

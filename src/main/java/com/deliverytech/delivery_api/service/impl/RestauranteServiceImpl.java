@@ -6,6 +6,8 @@ import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +31,7 @@ public class RestauranteServiceImpl implements RestauranteService{
     private ModelMapper modelMapper;
 
     @Override
+    @CacheEvict(value = "restaurantes", allEntries = true)
     public RestauranteResponseDTO cadastrar(RestauranteRequestDTO dto) {
 
         Optional<Restaurante> byNome = restauranteRepository.findByNome(dto.getNome());
@@ -44,6 +47,7 @@ public class RestauranteServiceImpl implements RestauranteService{
     }
 
     @Override
+    @Cacheable(value = "restaurantes")
     public List<RestauranteResponseDTO> listarAtivos() {
 
         List<Restaurante> restaurantesAtivos = restauranteRepository.findByAtivoTrue();
